@@ -1,7 +1,13 @@
+import Info from "./components/Info";
+
 export default function App() {
   return (
-    <h1 className="text-xl font-bold underline">
-      Hello world!
-    </h1>
-  )
+    <div className="h-screen flex">
+      <div className="bg-[#212B3B] w-1/2 m-12 rounded-3xl">
+        <Info/>
+      </div>
+      <div className="">
+      </div>
+    </div>
+  );
 }
