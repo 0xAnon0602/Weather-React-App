@@ -37,16 +37,16 @@ export default function Info() {
     <div className="flex items-center justify-center">
       {weatherInfo ? (
         <div>
-        <div className="flex items-center">
+        <div className=" items-center ml-5">
         <img
-            className="pt-20 mt-24 "
+            className="pt-20 mt-24"
             src={`https:` + weatherInfo.current.condition.icon.replaceAll("64", "128")}
             alt="Weather Icon"
         />
-        <p className="text-[#F0F1F1] text-5xl font-extrabold pt-20 mt-24 ml-20">{`${weatherInfo.current.temp_c}° C`}</p>
+        <p className="text-[#F0F1F1] text-5xl font-extrabold mt-8 text-center">{`${weatherInfo.current.temp_c}° C`}</p>
         </div>
-        <p className="text-[#F0F1F1] text-4xl font-bold ml-20 mt-16 text-center">{weatherInfo.location.name}</p>
-        <p className="text-[#F0F1F1] text-4xl font-bold ml-20 pt-3 text-center">{`${weatherInfo.location.region},${weatherInfo.location.country}`}</p>
+        <p className="text-[#F0F1F1] text-3xl font-bold mt-10 text-center">{weatherInfo.location.name}</p>
+        <p className="text-[#F0F1F1]  font-bold pt-3 text-center">{`${weatherInfo.location.region},${weatherInfo.location.country}`}</p>
         </div>
       ) : (
         <p>Loading weather information...</p>
