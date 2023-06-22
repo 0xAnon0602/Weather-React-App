@@ -80,7 +80,7 @@ const getDay = (_timestamp) => {
         <input
         type="text"
         id="Location"
-        className="bg-[#212B3B] border border[#212B3B] text-gray-900 text-xs rounded-lg block w-full p-2.5 px-70 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+        className="bg-[#212B3B] border border[#212B3B] text-gray-900 text-xs rounded-lg w-96 block p-2.5 px-70 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
         placeholder="Location"
         required
         value={location}
@@ -293,7 +293,7 @@ const getDay = (_timestamp) => {
         <input
         type="text"
         id="Location"
-        className="bg-[#212B3B] border border[#212B3B] text-gray-900 text-xs rounded-lg block w-full p-2.5 px-70 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+        className="bg-[#212B3B] border border[#212B3B] text-gray-900 text-xs rounded-lg block w-96 p-2.5 px-70 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
         placeholder="Location"
         required
         value={location}
