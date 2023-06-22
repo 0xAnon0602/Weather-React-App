@@ -15,7 +15,7 @@ export default function App() {
   const handleSearch = () => {
     setWeatherInfo("")
     axios
-    .get(`https://api.weatherapi.com/v1/current.json?key=57d549a0f3a74d38b55110037232106&q=${location}&aqi=no`)
+    .get(`https://api.weatherapi.com/v1/forecast.json?key=57d549a0f3a74d38b55110037232106&q=${location}&days=3&aqi=no&alerts=no`)
     .then((response) => {
       if (response.status === 200) {
         setWeatherInfo(response.data)
@@ -38,7 +38,8 @@ export default function App() {
         if (response.status === 200) {
         setError(false)
         axios
-        .get(`https://api.weatherapi.com/v1/current.json?key=57d549a0f3a74d38b55110037232106&q=${response.data.latitude},${response.data.longitude}&aqi=no`)
+        .get(`https://api.weatherapi.com/v1/forecast.json?key=57d549a0f3a74d38b55110037232106&q=${response.data.latitude},${response.data.longitude}&days=3&aqi=no&alerts=no
+      `)
         .then((response) => {
           if (response.status === 200) {
             setWeatherInfo(response.data)
@@ -64,60 +65,38 @@ export default function App() {
 
   return (
     <div className="h-screen flex">
-      <div className="bg-[#212B3B] w-1/2 m-12 rounded-3xl">
-      <div className="flex items-center justify-center">
-    {!error ? (
-      <>
-          {weatherInfo ? (
-      <div>
-      <div className="relative">
-          <img
-              className="pt-20 mt-24  m-auto"
-              src={`https:` + weatherInfo.current.condition.icon.replaceAll("64", "128")}
-              alt="Weather Icon"
-          />
-          <p className="text-[#F0F1F1] text-5xl font-extrabold mt-8 text-center">{`${weatherInfo.current.temp_c}° C`}</p>
-          </div>
-          <p className="text-[#F0F1F1] text-3xl font-bold mt-10 text-center">{weatherInfo.location.name}</p>
-          <p className="text-[#F0F1F1]  font-bold pt-3 text-center">{`${weatherInfo.location.region},${weatherInfo.location.country}`}</p>
-          </div>
-        ) : (
-          <div className="text-5xl pt-24 mt-24 m-auto">
-          <p className="text-[#F0F1F1] mt-12">Loading</p>
-          <ReactLoading className="mt-4 ml-12" type="spin" height={'40%'} width={'30%'} />
-          </div>
-        )}
-      </>
-    ):(
-      <>
-          <div className="text-3xl pt-24 mt-24 m-auto">
-          <p className="text-[#DB2546] mt-24 pt-24">No such location found!</p>
-          </div>
-      </>
-    )}
+    <div className="m-4"> 
+        <input
+        type="text"
+        id="Location"
+        className="bg-[#212B3B] border border[#212B3B] text-gray-900 text-xs rounded-lg block w-full p-2.5 px-80 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+        placeholder="Location"
+        required
+        value={location}
+        onChange={handleInputChange}
+        />
+    
+    <div>
+    <div className="flex">
+      <div className="mr-12">
+        <p className="text-5xl font-extrabold text-[#DEE0E4] mt-20 ml-20">{weatherInfo.location.name}</p>
+        <p className="text-[#DEE0E4] font-bold ml-32">{`${weatherInfo.location.region}, ${weatherInfo.location.country}`}</p>
+      </div>
+      <img
+        className="mt-20 ml-52"
+        src={`https:` + weatherInfo.current.condition.icon.replaceAll("64", "128")}
+        alt="Weather Icon"
+      />
+    </div>
+    <p className="text-[#DEE0E4] text-4xl font-extrabold ml-20 px-12">{`${weatherInfo.current.temp_c}° C`}</p>
+    </div>
 
-      </div>
-      </div>
-      <div className=" w-1/4 m-12 rounded-3xl">
-        <div className="flex items-center justify-center">
-          <div className="pt-36 mt-52  m-auto"> 
-              <input
-              type="text"
-              id="Location"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Location"
-              required
-              value={location}
-              onChange={handleInputChange}
-              />
-              <button className="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-3 ml-16"
-              onClick={handleSearch}
-              >
-              Search
-              </button>
-          </div>
-          </div>
-        </div>
+  <div className="bg-[#212B3B] h-64 mt-12 w-full rounded-3xl">
+    <p className="ml-12 py-8 text-[#9399A2] text-xs">TODAY'S FORECAST</p>
+  </div>
+
+
+    </div>
     </div>
   );
 }
