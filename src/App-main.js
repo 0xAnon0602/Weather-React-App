@@ -1,33 +1,33 @@
 import {useState, useEffect} from "react";
 import axios from "axios";
-// import ReactLoading from 'react-loading';
+import ReactLoading from 'react-loading';
 
 export default function App() {
 
   const [location, setLocation] = useState("");
   const [weatherInfo, setWeatherInfo] = useState("");
-  // const [error,setError]= useState(false)
+  const [error,setError]= useState(false)
 
   const handleInputChange = (event) => {
     setLocation(event.target.value);
   };
 
-//   const handleSearch = () => {
-//     setWeatherInfo("")
-//     axios
-//     .get(`https://api.weatherapi.com/v1/forecast.json?key=57d549a0f3a74d38b55110037232106&q=${location}&days=3&aqi=no&alerts=no`)
-//     .then((response) => {
-//       if (response.status === 200) {
-//         setWeatherInfo(response.data)
-//         setError(false)
-//       }
-//     })
-//     .catch((error) => {
-//       console.error("Error fetching data:", error);
-//       setError(true)
-//     });
+  const handleSearch = () => {
+    setWeatherInfo("")
+    axios
+    .get(`https://api.weatherapi.com/v1/forecast.json?key=57d549a0f3a74d38b55110037232106&q=${location}&days=3&aqi=no&alerts=no`)
+    .then((response) => {
+      if (response.status === 200) {
+        setWeatherInfo(response.data)
+        setError(false)
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+      setError(true)
+    });
 
-// };
+};
 
   useEffect(() => {
     axios
@@ -36,19 +36,19 @@ export default function App() {
       )
       .then((response) => {
         if (response.status === 200) {
-        // setError(false)
+        setError(false)
         axios
         .get(`https://api.weatherapi.com/v1/forecast.json?key=57d549a0f3a74d38b55110037232106&q=${response.data.latitude},${response.data.longitude}&days=3&aqi=no&alerts=no
       `)
         .then((response) => {
           if (response.status === 200) {
             setWeatherInfo(response.data)
-            // setError(false)
+            setError(false)
           }
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
-          // setError(true)
+          setError(true)
         });
 
         }
@@ -56,7 +56,7 @@ export default function App() {
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
-        // setError(true)
+        setError(true)
       });
     }, 
   
