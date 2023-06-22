@@ -1,33 +1,33 @@
 import {useState, useEffect} from "react";
 import axios from "axios";
-// import ReactLoading from 'react-loading';
+import ReactLoading from 'react-loading';
 
 export default function App() {
 
   const [location, setLocation] = useState("");
   const [weatherInfo, setWeatherInfo] = useState("");
-  // const [error,setError]= useState(false)
+  const [error,setError]= useState(false)
 
   const handleInputChange = (event) => {
     setLocation(event.target.value);
   };
 
-//   const handleSearch = () => {
-//     setWeatherInfo("")
-//     axios
-//     .get(`https://api.weatherapi.com/v1/forecast.json?key=57d549a0f3a74d38b55110037232106&q=${location}&days=3&aqi=no&alerts=no`)
-//     .then((response) => {
-//       if (response.status === 200) {
-//         setWeatherInfo(response.data)
-//         // setError(false)
-//       }
-//     })
-//     .catch((error) => {
-//       console.error("Error fetching data:", error);
-//       // setError(true)
-//     });
+  const handleSearch = () => {
+    setWeatherInfo("")
+    axios
+    .get(`https://api.weatherapi.com/v1/forecast.json?key=57d549a0f3a74d38b55110037232106&q=${location}&days=3&aqi=no&alerts=no`)
+    .then((response) => {
+      if (response.status === 200) {
+        setWeatherInfo(response.data)
+        setError(false)
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+      setError(true)
+    });
 
-// };
+};
 
   useEffect(() => {
     axios
@@ -36,19 +36,19 @@ export default function App() {
       )
       .then((response) => {
         if (response.status === 200) {
-        // setError(false)
+        setError(false)
         axios
         .get(`https://api.weatherapi.com/v1/forecast.json?key=57d549a0f3a74d38b55110037232106&q=${response.data.latitude},${response.data.longitude}&days=3&aqi=no&alerts=no
       `)
         .then((response) => {
           if (response.status === 200) {
             setWeatherInfo(response.data)
-            // setError(false)
+            setError(false)
           }
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
-          // setError(true)
+          setError(true)
         });
 
         }
@@ -56,7 +56,7 @@ export default function App() {
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
-        // setError(true)
+        setError(true)
       });
     }, 
   
@@ -75,7 +75,9 @@ export default function App() {
         value={location}
         onChange={handleInputChange}
         />
-    
+
+    {weatherInfo ? (
+    <>
     <div>
     <div className="flex">
       <div className="mr-12">
@@ -88,15 +90,91 @@ export default function App() {
         alt="Weather Icon"
       />
     </div>
-    <p className="text-[#DEE0E4] text-4xl font-extrabold ml-20 px-12">{`${weatherInfo.current.temp_c}° C`}</p>
+    <p className="text-[#DEE0E4] text-4xl font-extrabold ml-20 px-8">{`${weatherInfo.current.temp_c}° C`}</p>
+    </div>
+    <div className="bg-[#212B3B] h-64 mt-12 w-full rounded-3xl">
+    <p className="ml-12 py-10 text-[#9399A2] text-xs font-bold">TODAY'S FORECAST</p>
+
+    <div className="flex divide-x-2 divide-[#9399A2]">
+
+<div className="row px-1 mr-3">
+  <p className="text-[#9399A2] ml-8 text-sm font-semibold">6:00 AM</p>
+  <img
+    className="ml-6 mt-2"
+    src={`https:` + weatherInfo.forecast.forecastday[0].hour[6].condition.icon}
+    alt="Weather Icon"
+  />
+  <p className="text-[#DEE0E4] font-bold ml-8 mt-3">{`${weatherInfo.forecast.forecastday[0].hour[6].temp_c}° C`}</p>
+</div>
+
+<div className="row px-3 mr-3">
+  <p className="text-[#9399A2] ml-8 text-sm font-semibold">9:00 AM</p>
+  <img
+    className="ml-6 mt-2 mr-3"
+    src={`https:` + weatherInfo.forecast.forecastday[0].hour[9].condition.icon}
+    alt="Weather Icon"
+  />
+  <p className="text-[#DEE0E4] font-bold ml-8 mt-3">{`${weatherInfo.forecast.forecastday[0].hour[9].temp_c}° C`}</p>
+</div>
+
+<div className="row px-3 mr-3">
+  <p className="text-[#9399A2] ml-8 text-sm font-semibold">12:00 PM</p>
+  <img
+    className="ml-6 mt-2 mr-3"
+    src={`https:` + weatherInfo.forecast.forecastday[0].hour[12].condition.icon}
+    alt="Weather Icon"
+  />
+  <p className="text-[#DEE0E4] font-bold ml-8 mt-3">{`${weatherInfo.forecast.forecastday[0].hour[12].temp_c}° C`}</p>
+</div>
+
+<div className="row px-3 mr-3">
+  <p className="text-[#9399A2] ml-8 text-sm font-semibold">3:00 PM</p>
+  <img
+    className="ml-6 mt-2 mr-3"
+    src={`https:` + weatherInfo.forecast.forecastday[0].hour[15].condition.icon}
+    alt="Weather Icon"
+  />
+  <p className="text-[#DEE0E4] font-bold ml-8 mt-3">{`${weatherInfo.forecast.forecastday[0].hour[15].temp_c}° C`}</p>
+</div>
+
+<div className="row px-3 mr-3">
+  <p className="text-[#9399A2] ml-8 text-sm font-semibold">6:00 PM</p>
+  <img
+    className="ml-6 mt-2 mr-3"
+    src={`https:` + weatherInfo.forecast.forecastday[0].hour[18].condition.icon}
+    alt="Weather Icon"
+  />
+  <p className="text-[#DEE0E4] font-bold ml-8 mt-3">{`${weatherInfo.forecast.forecastday[0].hour[18].temp_c}° C`}</p>
+</div>
+
+<div className="row px-3 mr-3">
+  <p className="text-[#9399A2] ml-8 text-sm font-semibold">9:00 PM</p>
+  <img
+    className="ml-6 mt-2 mr-3"
+    src={`https:` + weatherInfo.forecast.forecastday[0].hour[21].condition.icon}
+    alt="Weather Icon"
+  />
+  <p className="text-[#DEE0E4] font-bold ml-8 mt-3">{`${weatherInfo.forecast.forecastday[0].hour[21].temp_c}° C`}</p>
+</div>
+
+</div>
+    </div>
+    </>
+    ):(
+      <>
+      </>
+    )}
     </div>
 
-  <div className="bg-[#212B3B] h-64 mt-12 w-full rounded-3xl">
-    <p className="ml-12 py-8 text-[#9399A2] text-xs">TODAY'S FORECAST</p>
-  </div>
+    {weatherInfo ? (
+      <>
 
-
-    </div>
+      </>
+    ):(
+      <>
+      </>
+    )}
+    
     </div>
   );
 }
