@@ -15,7 +15,7 @@ export default function App() {
   const handleSearch = () => {
     setWeatherInfo("")
     axios
-    .get(`https://api.weatherapi.com/v1/forecast.json?key=57d549a0f3a74d38b55110037232106&q=${location}&days=3&aqi=no&alerts=no`)
+    .get(`https://api.weatherapi.com/v1/forecast.json?key=57d549a0f3a74d38b55110037232106&q=${location}&days=7&aqi=no&alerts=no`)
     .then((response) => {
       if (response.status === 200) {
         setWeatherInfo(response.data)
@@ -29,6 +29,12 @@ export default function App() {
 
 };
 
+const getDay = (_timestamp) => {
+  var a = new Date(_timestamp*1000);
+  var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  return ((days[a.getDay()]).toLocaleUpperCase())
+}
+
   useEffect(() => {
     axios
       .get(
@@ -38,7 +44,7 @@ export default function App() {
         if (response.status === 200) {
         setError(false)
         axios
-        .get(`https://api.weatherapi.com/v1/forecast.json?key=57d549a0f3a74d38b55110037232106&q=${response.data.latitude},${response.data.longitude}&days=3&aqi=no&alerts=no
+        .get(`https://api.weatherapi.com/v1/forecast.json?key=57d549a0f3a74d38b55110037232106&q=${response.data.latitude},${response.data.longitude}&days=7&aqi=no&alerts=no
       `)
         .then((response) => {
           if (response.status === 200) {
@@ -65,7 +71,12 @@ export default function App() {
 
   return (
     <div className="h-screen flex">
+
+    {!error ? (
+      <>
+
     <div className="m-4"> 
+    <div className="flex">
         <input
         type="text"
         id="Location"
@@ -75,13 +86,19 @@ export default function App() {
         value={location}
         onChange={handleInputChange}
         />
+      <button className="bg-blue-500 text-white px-2 rounded ml-2 mt-1"
+        onClick={handleSearch}
+        >
+        Search
+      </button>
+  </div>
 
     {weatherInfo ? (
     <>
     <div>
     <div className="flex">
       <div className="mr-12">
-        <p className="text-5xl font-extrabold text-[#DEE0E4] mt-20 ml-20">{weatherInfo.location.name}</p>
+        <p className="text-5xl font-extrabold text-[#DEE0E4] mt-20 ml-20 px-10">{weatherInfo.location.name}</p>
         <p className="text-[#DEE0E4] font-bold ml-32">{`${weatherInfo.location.region}, ${weatherInfo.location.country}`}</p>
       </div>
       <img
@@ -90,14 +107,14 @@ export default function App() {
         alt="Weather Icon"
       />
     </div>
-    <p className="text-[#DEE0E4] text-4xl font-extrabold ml-20 px-8">{`${weatherInfo.current.temp_c}° C`}</p>
+    <p className="text-[#DEE0E4] text-4xl font-extrabold ml-20 px-10">{`${weatherInfo.current.temp_c}° C`}</p>
     </div>
     <div className="bg-[#212B3B] h-64 mt-12 w-full rounded-3xl">
     <p className="ml-12 py-10 text-[#9399A2] text-xs font-bold">TODAY'S FORECAST</p>
 
     <div className="flex divide-x-2 divide-[#9399A2]">
 
-<div className="row px-1 mr-3">
+<div className="row px-1 mr-6">
   <p className="text-[#9399A2] ml-8 text-sm font-semibold">6:00 AM</p>
   <img
     className="ml-6 mt-2"
@@ -158,22 +175,125 @@ export default function App() {
 </div>
 
 </div>
-    </div>
+</div>
+      <div>
+        <p className="mt-20 text-center text-[#DEE0E4] font-bold text-2xl"> Created by 0xAnon</p>
+      </div>
+
     </>
     ):(
       <>
+        <div className="text-xl pt-24 mt-24 text-center ml-20 flex">
+        <p className="text-[#F0F1F1] ml-20 mx-2">Loading</p>
+        <ReactLoading className="" type="cylon" height={'5%'} width={'5%'} />
+        </div>
       </>
     )}
     </div>
 
     {weatherInfo ? (
       <>
+    <div className="bg-[#212B3B] mt-16 w-96 rounded-3xl">
+    <p className="ml-12 py-10 text-[#9399A2] text-xs font-bold">7-DAY FORECAST</p>
 
+    <div className="row ">
+
+    <div className="flex mb-3 py-3">
+    <p className="text-[#9399A2] text-xs font-semibold ml-12 mt-6">TODAY</p>
+    <img
+    className="ml-20 px-14 absolute"
+    src={`https:` + weatherInfo.forecast.forecastday[0].day.condition.icon}
+    alt="Weather Icon"
+    /> 
+    <p className="text-[#9399A2] text-xs font-semibold mt-6 ml-20 px-32 absolute"> {weatherInfo.forecast.forecastday[0].day.condition.text}</p>   
+    <p className="text-[#DFE0E4] text-xs font-semibold mt-6 ml-44 px-32 absolute"> {`${weatherInfo.forecast.forecastday[0].day.maxtemp_c}/${weatherInfo.forecast.forecastday[0].day.mintemp_c}`}</p>   
+    </div>
+
+
+
+    <div className="flex mb-3 py-5">
+    <p className="text-[#9399A2] text-xs font-semibold ml-12 mt-6">{getDay(weatherInfo.forecast.forecastday[1].date_epoch)}</p>
+    <img
+    className="ml-20 px-14 absolute"
+    src={`https:` + weatherInfo.forecast.forecastday[1].day.condition.icon}
+    alt="Weather Icon"
+    /> 
+    <p className="text-[#9399A2] text-xs font-semibold mt-6 ml-20 px-32 absolute"> {weatherInfo.forecast.forecastday[1].day.condition.text}</p>   
+    <p className="text-[#DFE0E4] text-xs font-semibold mt-6 ml-44 px-32 absolute"> {`${weatherInfo.forecast.forecastday[1].day.maxtemp_c}/${weatherInfo.forecast.forecastday[1].day.mintemp_c}`}</p>   </div>
+
+
+
+    <div className="flex mb-3 py-5">
+    <p className="text-[#9399A2] text-xs font-semibold ml-12 mt-6">{getDay(weatherInfo.forecast.forecastday[2].date_epoch)}</p>
+    <img
+    className="ml-20 px-14 absolute"
+    src={`https:` + weatherInfo.forecast.forecastday[2].day.condition.icon}
+    alt="Weather Icon"
+    /> 
+    <p className="text-[#9399A2] text-xs font-semibold mt-6 ml-20 px-32 absolute"> {weatherInfo.forecast.forecastday[2].day.condition.text}</p>   
+    <p className="text-[#DFE0E4] text-xs font-semibold mt-6 ml-44 px-32 absolute"> {`${weatherInfo.forecast.forecastday[2].day.maxtemp_c}/${weatherInfo.forecast.forecastday[2].day.mintemp_c}`}</p>   </div>
+
+
+    <div className="flex mb-3 py-5">
+    <p className="text-[#9399A2] text-xs font-semibold ml-12 mt-6">{getDay(weatherInfo.forecast.forecastday[3].date_epoch)}</p>
+    <img
+    className="ml-20 px-14 absolute"
+    src={`https:` + weatherInfo.forecast.forecastday[3].day.condition.icon}
+    alt="Weather Icon"
+    /> 
+    <p className="text-[#9399A2] text-xs font-semibold mt-6 ml-20 px-32 absolute"> {weatherInfo.forecast.forecastday[3].day.condition.text}</p>   
+    <p className="text-[#DFE0E4] text-xs font-semibold mt-6 ml-44 px-32 absolute"> {`${weatherInfo.forecast.forecastday[3].day.maxtemp_c}/${weatherInfo.forecast.forecastday[3].day.mintemp_c}`}</p>   </div>
+
+
+    <div className="flex mb-3 py-5">
+    <p className="text-[#9399A2] text-xs font-semibold ml-12 mt-6">{getDay(weatherInfo.forecast.forecastday[4].date_epoch)}</p>
+    <img
+    className="ml-20 px-14 absolute"
+    src={`https:` + weatherInfo.forecast.forecastday[4].day.condition.icon}
+    alt="Weather Icon"
+    /> 
+    <p className="text-[#9399A2] text-xs font-semibold mt-6 ml-20 px-32 absolute"> {weatherInfo.forecast.forecastday[4].day.condition.text}</p>   
+    <p className="text-[#DFE0E4] text-xs font-semibold mt-6 ml-44 px-32 absolute"> {`${weatherInfo.forecast.forecastday[4].day.maxtemp_c}/${weatherInfo.forecast.forecastday[4].day.mintemp_c}`}</p>   </div>
+
+
+    <div className="flex mb-3 py-5">
+    <p className="text-[#9399A2] text-xs font-semibold ml-12 mt-6">{getDay(weatherInfo.forecast.forecastday[5].date_epoch)}</p>
+    <img
+    className="ml-20 px-14 absolute"
+    src={`https:` + weatherInfo.forecast.forecastday[5].day.condition.icon}
+    alt="Weather Icon"
+    /> 
+    <p className="text-[#9399A2] text-xs font-semibold mt-6 ml-20 px-32 absolute"> {weatherInfo.forecast.forecastday[5].day.condition.text}</p>   
+    <p className="text-[#DFE0E4] text-xs font-semibold mt-6 ml-44 px-32 absolute"> {`${weatherInfo.forecast.forecastday[5].day.maxtemp_c}/${weatherInfo.forecast.forecastday[5].day.mintemp_c}`}</p>   </div>
+
+
+    <div className="flex mb-3 py-5">
+    <p className="text-[#9399A2] text-xs font-semibold ml-12 mt-6">{getDay(weatherInfo.forecast.forecastday[6].date_epoch)}</p>
+    <img
+    className="ml-20 px-14 absolute"
+    src={`https:` + weatherInfo.forecast.forecastday[6].day.condition.icon}
+    alt="Weather Icon"
+    /> 
+    <p className="text-[#9399A2] text-xs font-semibold mt-6 ml-20 px-32 absolute"> {weatherInfo.forecast.forecastday[6].day.condition.text}</p>   
+    <p className="text-[#DFE0E4] text-xs font-semibold mt-6 ml-44 px-32 absolute"> {`${weatherInfo.forecast.forecastday[6].day.maxtemp_c}/${weatherInfo.forecast.forecastday[6].day.mintemp_c}`}</p>   </div>
+
+
+    </div>
+    </div>
       </>
     ):(
       <>
       </>
     )}
+      </>
+    ):(
+      <>
+      <div className="text-3xl pt-24 mt-24 m-auto">
+      <p className="text-[#DB2546] mt-24 pt-24">No such location found!</p>
+      </div>
+      </>
+    )}
+
     
     </div>
   );
