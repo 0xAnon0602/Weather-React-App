@@ -70,7 +70,7 @@ const getDay = (_timestamp) => {
 
 
   return (
-    <div className="h-screen flex">
+    <div className="flex">
 
     {!error ? (
       <>
@@ -80,7 +80,7 @@ const getDay = (_timestamp) => {
         <input
         type="text"
         id="Location"
-        className="bg-[#212B3B] border border[#212B3B] text-gray-900 text-xs rounded-lg block w-full p-2.5 px-80 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+        className="bg-[#212B3B] border border[#212B3B] text-gray-900 text-xs rounded-lg block w-full p-2.5 px-70 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
         placeholder="Location"
         required
         value={location}
@@ -91,7 +91,7 @@ const getDay = (_timestamp) => {
         >
         Search
       </button>
-  </div>
+    </div>
 
     {weatherInfo ? (
     <>
@@ -194,11 +194,11 @@ const getDay = (_timestamp) => {
     {weatherInfo ? (
       <>
     <div className="bg-[#212B3B] mt-16 w-96 rounded-3xl">
-    <p className="ml-12 py-10 text-[#9399A2] text-xs font-bold">7-DAY FORECAST</p>
+    <p className="ml-12 py-8 text-[#9399A2] text-xs font-bold">7-DAY FORECAST</p>
 
-    <div className="row ">
-
+    <div className="grid grid-cols-1 gap-2">
     <div className="flex mb-3 py-3">
+
     <p className="text-[#9399A2] text-xs font-semibold ml-12 mt-6">TODAY</p>
     <img
     className="ml-20 px-14 absolute"
@@ -288,7 +288,25 @@ const getDay = (_timestamp) => {
       </>
     ):(
       <>
-      <div className="text-3xl pt-24 mt-24 m-auto">
+    <div className="m-2"> 
+      <div className="flex">
+        <input
+        type="text"
+        id="Location"
+        className="bg-[#212B3B] border border[#212B3B] text-gray-900 text-xs rounded-lg block w-full p-2.5 px-70 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+        placeholder="Location"
+        required
+        value={location}
+        onChange={handleInputChange}
+        />
+      <button className="bg-blue-500 text-white px-2 rounded ml-2 mt-1"
+        onClick={handleSearch}
+        >
+        Search
+      </button>
+      </div>
+    </div>
+      <div className="text-3xl pt-24 mt-24 text-center">
       <p className="text-[#DB2546] mt-24 pt-24">No such location found!</p>
       </div>
       </>
